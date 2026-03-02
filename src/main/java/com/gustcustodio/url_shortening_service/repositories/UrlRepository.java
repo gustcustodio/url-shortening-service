@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UrlRepository extends JpaRepository<UrlEntity, Long> {
 
-
+    boolean existsByShortCode(String shortCode);
 
 }
