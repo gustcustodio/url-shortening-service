@@ -1,8 +1,16 @@
 package com.gustcustodio.url_shortening_service.controllers;
 
+import com.gustcustodio.url_shortening_service.dtos.UrlRequestDTO;
+import com.gustcustodio.url_shortening_service.dtos.UrlResponseDTO;
 import com.gustcustodio.url_shortening_service.services.UrlService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/shorten")
@@ -12,6 +20,13 @@ public class UrlController {
 
     public UrlController(UrlService urlService) {
         this.urlService = urlService;
+    }
+
+    @PostMapping
+    private ResponseEntity<UrlResponseDTO> createShortUrl(@RequestBody UrlRequestDTO urlRequestDTO) {
+        UrlResponseDTO urlResponseDTO = urlService.createShortUrl(urlRequestDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(urlResponseDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(urlResponseDTO);
     }
 
 }
