@@ -4,6 +4,8 @@ import com.gustcustodio.url_shortening_service.dtos.UrlRequestDTO;
 import com.gustcustodio.url_shortening_service.dtos.UrlResponseDTO;
 import com.gustcustodio.url_shortening_service.services.UrlService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,12 @@ public class UrlController {
 
     public UrlController(UrlService urlService) {
         this.urlService = urlService;
+    }
+
+    @GetMapping(value = "{shortCode}")
+    private ResponseEntity<UrlResponseDTO> getOriginalUrl(@PathVariable String shortCode) {
+        UrlResponseDTO urlResponseDTO = urlService.getOriginalUrl(shortCode);
+        return ResponseEntity.ok(urlResponseDTO);
     }
 
     @PostMapping

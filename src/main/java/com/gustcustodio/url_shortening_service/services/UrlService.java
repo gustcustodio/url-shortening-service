@@ -19,6 +19,11 @@ public class UrlService {
         this.urlRepository = urlRepository;
     }
 
+    public UrlResponseDTO getOriginalUrl(String shortCode) {
+        UrlEntity urlEntity = urlRepository.findByShortCode(shortCode).orElseThrow();
+        return new UrlResponseDTO(urlEntity);
+    }
+
     public UrlResponseDTO createShortUrl(UrlRequestDTO urlRequestDTO) {
         String shortCode;
 
