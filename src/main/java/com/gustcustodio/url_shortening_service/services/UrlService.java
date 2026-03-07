@@ -12,7 +12,6 @@ import java.util.Random;
 public class UrlService {
 
     private final UrlRepository urlRepository;
-    private static final String baseDomain = "https://short.com/";
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int CODE_LENGTH = 6;
 
@@ -29,7 +28,7 @@ public class UrlService {
 
         UrlEntity urlEntity = new UrlEntity();
         urlEntity.setUrl(urlRequestDTO.getUrl());
-        urlEntity.setShortCode(baseDomain + shortCode);
+        urlEntity.setShortCode(shortCode);
         urlEntity = urlRepository.save(urlEntity);
 
         return new UrlResponseDTO(urlEntity);
