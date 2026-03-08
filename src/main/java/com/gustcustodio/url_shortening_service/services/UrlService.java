@@ -23,7 +23,7 @@ public class UrlService {
 
     @Transactional(readOnly = true)
     public UrlResponseDTO getOriginalUrl(String shortCode) {
-        UrlEntity urlEntity = urlRepository.findByShortCode(shortCode).orElseThrow();
+        UrlEntity urlEntity = urlRepository.findByShortCode(shortCode).orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
         return new UrlResponseDTO(urlEntity);
     }
 
@@ -45,7 +45,7 @@ public class UrlService {
 
     @Transactional
     public UrlResponseDTO updateUrl(String shortCode, UrlRequestDTO urlRequestDTO) {
-        UrlEntity urlEntity = urlRepository.findByShortCode(shortCode).orElseThrow();
+        UrlEntity urlEntity = urlRepository.findByShortCode(shortCode).orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
         urlEntity.setUrl(urlRequestDTO.getUrl());
         urlEntity = urlRepository.saveAndFlush(urlEntity);
         return new UrlResponseDTO(urlEntity);
