@@ -29,32 +29,32 @@ public class UrlController {
     }
 
     @GetMapping(value = "{shortCode}")
-    private ResponseEntity<UrlResponseDTO> getOriginalUrl(@PathVariable String shortCode) {
+    public ResponseEntity<UrlResponseDTO> getOriginalUrl(@PathVariable String shortCode) {
         UrlResponseDTO urlResponseDTO = urlService.getOriginalUrl(shortCode);
         return ResponseEntity.ok(urlResponseDTO);
     }
 
     @GetMapping(value = "{shortCode}/stats")
-    private ResponseEntity<UrlStatisticsResponseDTO> getUrlStatistics(@PathVariable String shortCode) {
+    public ResponseEntity<UrlStatisticsResponseDTO> getUrlStatistics(@PathVariable String shortCode) {
         UrlStatisticsResponseDTO urlStatisticsResponseDTO = urlService.getUrlStatistics(shortCode);
         return ResponseEntity.ok(urlStatisticsResponseDTO);
     }
 
     @PostMapping
-    private ResponseEntity<UrlResponseDTO> createShortUrl(@Valid @RequestBody UrlRequestDTO urlRequestDTO) {
+    public ResponseEntity<UrlResponseDTO> createShortUrl(@Valid @RequestBody UrlRequestDTO urlRequestDTO) {
         UrlResponseDTO urlResponseDTO = urlService.createShortUrl(urlRequestDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(urlResponseDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(urlResponseDTO);
     }
 
     @PutMapping(value = "{shortCode}")
-    private ResponseEntity<UrlResponseDTO> updateUrl(@PathVariable String shortCode, @Valid @RequestBody UrlRequestDTO urlRequestDTO) {
+    public ResponseEntity<UrlResponseDTO> updateUrl(@PathVariable String shortCode, @Valid @RequestBody UrlRequestDTO urlRequestDTO) {
         UrlResponseDTO urlResponseDTO = urlService.updateUrl(shortCode, urlRequestDTO);
         return ResponseEntity.ok(urlResponseDTO);
     }
 
     @DeleteMapping(value = "{shortCode}")
-    private ResponseEntity<Void> deleteUrl(@PathVariable String shortCode) {
+    public ResponseEntity<Void> deleteUrl(@PathVariable String shortCode) {
         urlService.deleteUrl(shortCode);
         return ResponseEntity.noContent().build();
     }
