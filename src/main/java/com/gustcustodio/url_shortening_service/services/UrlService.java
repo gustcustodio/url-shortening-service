@@ -5,6 +5,7 @@ import com.gustcustodio.url_shortening_service.dtos.UrlResponseDTO;
 import com.gustcustodio.url_shortening_service.entities.UrlEntity;
 import com.gustcustodio.url_shortening_service.repositories.UrlRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
 
@@ -36,6 +37,14 @@ public class UrlService {
         urlEntity.setShortCode(shortCode);
         urlEntity = urlRepository.save(urlEntity);
 
+        return new UrlResponseDTO(urlEntity);
+    }
+
+    @Transactional
+    public UrlResponseDTO updateUrl(String shortCode, UrlRequestDTO urlRequestDTO) {
+        UrlEntity urlEntity = urlRepository.findByShortCode(shortCode).orElseThrow();
+        urlEntity.setUrl(urlRequestDTO.getUrl());
+        urlEntity = urlRepository.saveAndFlush(urlEntity);
         return new UrlResponseDTO(urlEntity);
     }
 
