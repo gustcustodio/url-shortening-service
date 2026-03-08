@@ -2,6 +2,7 @@ package com.gustcustodio.url_shortening_service.services;
 
 import com.gustcustodio.url_shortening_service.dtos.UrlRequestDTO;
 import com.gustcustodio.url_shortening_service.dtos.UrlResponseDTO;
+import com.gustcustodio.url_shortening_service.dtos.UrlStatisticsResponseDTO;
 import com.gustcustodio.url_shortening_service.entities.UrlEntity;
 import com.gustcustodio.url_shortening_service.repositories.UrlRepository;
 import com.gustcustodio.url_shortening_service.services.exceptions.ResourceNotFoundException;
@@ -21,10 +22,18 @@ public class UrlService {
         this.urlRepository = urlRepository;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public UrlResponseDTO getOriginalUrl(String shortCode) {
         UrlEntity urlEntity = urlRepository.findByShortCode(shortCode).orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
+        urlEntity.setAccessCount(urlEntity.getAccessCount() + 1);
+        urlEntity = urlRepository.save(urlEntity);
         return new UrlResponseDTO(urlEntity);
+    }
+
+    @Transactional(readOnly = true)
+    public UrlStatisticsResponseDTO getUrlStatistics(String shortCode) {
+        UrlEntity urlEntity = urlRepository.findByShortCode(shortCode).orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
+        return new UrlStatisticsResponseDTO(urlEntity);
     }
 
     @Transactional
