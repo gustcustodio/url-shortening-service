@@ -4,6 +4,7 @@ import com.gustcustodio.url_shortening_service.dtos.UrlRequestDTO;
 import com.gustcustodio.url_shortening_service.dtos.UrlResponseDTO;
 import com.gustcustodio.url_shortening_service.entities.UrlEntity;
 import com.gustcustodio.url_shortening_service.repositories.UrlRepository;
+import com.gustcustodio.url_shortening_service.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +49,14 @@ public class UrlService {
         urlEntity.setUrl(urlRequestDTO.getUrl());
         urlEntity = urlRepository.saveAndFlush(urlEntity);
         return new UrlResponseDTO(urlEntity);
+    }
+
+    @Transactional
+    public void deleteUrl(String shortCode) {
+        if (!urlRepository.existsByShortCode(shortCode)) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
+        urlRepository.deleteByShortCode(shortCode);
     }
 
     private String generateRandomCode() {
