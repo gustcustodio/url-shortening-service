@@ -13,4 +13,6 @@ public interface UrlRepository extends JpaRepository<UrlEntity, Long> {
 
     boolean existsByShortCode(String shortCode);
 
+    void deleteByShortCode(String shortCode);
+
 }
