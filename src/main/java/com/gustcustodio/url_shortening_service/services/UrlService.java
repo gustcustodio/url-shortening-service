@@ -20,11 +20,13 @@ public class UrlService {
         this.urlRepository = urlRepository;
     }
 
+    @Transactional(readOnly = true)
     public UrlResponseDTO getOriginalUrl(String shortCode) {
         UrlEntity urlEntity = urlRepository.findByShortCode(shortCode).orElseThrow();
         return new UrlResponseDTO(urlEntity);
     }
 
+    @Transactional
     public UrlResponseDTO createShortUrl(UrlRequestDTO urlRequestDTO) {
         String shortCode;
 
