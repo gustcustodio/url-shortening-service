@@ -3,6 +3,7 @@ package com.gustcustodio.url_shortening_service.controllers;
 import com.gustcustodio.url_shortening_service.dtos.UrlRequestDTO;
 import com.gustcustodio.url_shortening_service.dtos.UrlResponseDTO;
 import com.gustcustodio.url_shortening_service.services.UrlService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,14 +27,14 @@ public class UrlController {
     }
 
     @PostMapping
-    private ResponseEntity<UrlResponseDTO> createShortUrl(@RequestBody UrlRequestDTO urlRequestDTO) {
+    private ResponseEntity<UrlResponseDTO> createShortUrl(@Valid @RequestBody UrlRequestDTO urlRequestDTO) {
         UrlResponseDTO urlResponseDTO = urlService.createShortUrl(urlRequestDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(urlResponseDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(urlResponseDTO);
     }
 
     @PutMapping(value = "{shortCode}")
-    private ResponseEntity<UrlResponseDTO> updateUrl(@PathVariable String shortCode, @RequestBody UrlRequestDTO urlRequestDTO) {
+    private ResponseEntity<UrlResponseDTO> updateUrl(@PathVariable String shortCode, @Valid @RequestBody UrlRequestDTO urlRequestDTO) {
         UrlResponseDTO urlResponseDTO = urlService.updateUrl(shortCode, urlRequestDTO);
         return ResponseEntity.ok(urlResponseDTO);
     }

@@ -1,5 +1,6 @@
 package com.gustcustodio.url_shortening_service.dtos;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class UrlRequestDTO {
 
+    @NotBlank(message = "Required field")
     private String url;
 
 }
